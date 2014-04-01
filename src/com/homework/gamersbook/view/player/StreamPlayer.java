@@ -41,14 +41,14 @@ public class StreamPlayer extends Activity {
 
 			@Override
 			public void onJsonGetFinished(UsherAPIResponse uAPIres) {
-				if (uAPIres == null) {
+				if (!uAPIres.isStreamOn()) {
 					Toast.makeText(getApplicationContext(), "Stream is off",
 							Toast.LENGTH_LONG).show();
 					finish();
+					return;
 				}
 				streamPlayer.stopPlayback();
-				streamPlayer.setVideoURI(Uri.parse(uAPIres
-						.getURL(UsherAPIResponse.QUALITY.HIGH)));
+				streamPlayer.setVideoURI(Uri.parse(uAPIres.getBestQuality()));
 				MediaController mc = new MediaController(StreamPlayer.this);
 				mc.setKeepScreenOn(true);
 				streamPlayer.setMediaController(mc);
